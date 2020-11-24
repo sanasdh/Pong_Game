@@ -1,7 +1,7 @@
 class SceneMain extends Phaser.Scene {
   constructor() {
       super('SceneMain'); //make sure the string in super is exactly like the class name
-      
+      this.key={}
   }
   preload()
   {
@@ -31,31 +31,39 @@ this.anims.create({
 
 
     // ball
-  let ball= this.physics.add.image(game.config.width/2,game.config.height/2,"ball")
-  Align.scaleToGameW(ball,.025)
-  ball.setVelocity(350,350)
-  ball.body.collideWorldBounds = true
-  ball.body.bounce.set(1);
-  ball.body.onWorldBounds = true;
-  this.physics.world.on('worldbounds', this.onWorldBounds);
+  this.ball= this.physics.add.image(game.config.width/2,game.config.height/2,"ball")
+  Align.scaleToGameW(this.ball,.025)
+  this.ball.setVelocity(350,350)
+  this.ball.body.collideWorldBounds = true
+  this.ball.body.bounce.set(1);
+  this.ball.body.onWorldBounds = true;
+// this.createNewBall()
 
   // players
-  let player1=this.physics.add.sprite(5+ball.width/2*.025, game.config.height/2, "paddle")
-  Align.scaleToGameW(player1,.015)
-  this.physics.add.collider(ball,player1)
-  player1.setImmovable(true)
+  this.player1=this.physics.add.sprite(5+this.ball.width/2*.025, game.config.height/2, "paddle")
+  Align.scaleToGameW(this.player1,.015)
+  this.physics.add.collider(this.ball,this.player1)
+  this.player1.setImmovable(true)
+  this.player1.body.collideWorldBounds = true
 
-  let player2=this.physics.add.sprite(game.config.width-ball.width/2*.025-5, game.config.height/2, "paddle")
-  Align.scaleToGameW(player2,.015)
-  this.physics.add.collider(ball,player2)
-  player2.setImmovable(true)
-  player2.body.collideWorldBounds = true
+
+  this.player2=this.physics.add.sprite(game.config.width-this.ball.width/2*.025-5, game.config.height/2, "paddle")
+  Align.scaleToGameW(this.player2,.015)
+  this.physics.add.collider(this.ball,this.player2)
+  this.player2.setImmovable(true)
+  this.player2.body.collideWorldBounds = true
 // if you play against computer
-player2.body.velocity.setTo(ball.body.velocity.y);
-player2.body.velocity.x=0
-player2.body.maxVelocity.y=250;
-  }
+  // this.player2.body.velocity.setTo(this.ball.body.velocity.y);
+  // this.player2.body.velocity.x=0
+  // this.player2.body.maxVelocity.y=200;
 
+
+  // move players
+  this.moves=this.input.keyboard.createCursorKeys();
+  this.key.q= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q)
+  this.key.w= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
+  
+}
  onWorldBounds =(body)=>
 {
   console.log("here");
@@ -69,11 +77,68 @@ player2.body.maxVelocity.y=250;
       console.log("width", ball.width);
 let explosion = this.add.sprite(ball.x,ball.y,'exp');
 explosion.play('boom');
-ball.destroy()
+ball.body.velocity.y=0
+ball.body.velocity.x=0
+this.time.addEvent({delay:900, callback:this.createNewBall , callbackScope: this, loop:false})
+
+// ball.destroy()
+
+// this.createNewBall()
+// this.physics.add.collider(this.ball,this.player1)
+// this.physics.add.collider(this.ball,this.player2)
+
+
+// ball.body.velocity.y=0
+// ball.body.velocity.x=0
+// ball.destroy()
     }
 
 }
-  update(){
+createNewBall(){
+  // this.ball.destroy()
+  // this.ball= this.physics.add.image(game.config.width/2,game.config.height/2,"ball")
+  this.ball.x=game.config.width/2
+  this.ball.y=game.config.height/2
+  // Align.scaleToGameW(this.ball,.025)
+  this.ball.setVelocity(350,350)
+  this.ball.body.collideWorldBounds = true
+  this.ball.body.bounce.set(1);
+  this.ball.body.onWorldBounds = true;
+  this.physics.add.collider(this.ball,this.player1)
+  this.physics.add.collider(this.ball,this.player2)
+}
 
+  update(){
+    this.onWorldBounds(this.ball.body)
+// // move paddle 2 for computer
+//     this.player2.body.velocity.setTo(this.ball.body.velocity.y);
+//     this.player2.body.velocity.x=0
+//     this.player2.body.maxVelocity.y=200;
+
+// move paddle 2 for player 2(not computer)
+if(this.key.w.isDown){
+  this.player2.body.velocity.y=200;
+}
+
+else{
+  this.player2.body.setVelocityY(0);
+}
+if(this.key.q.isDown){
+  this.player2.body.setVelocityY(-200);
+}
+
+// user moves paddle1 
+if(this.moves.down.isDown){
+  this.player1.body.velocity.y=200;
+}
+  // this.player1.body.setVelocityY(-200);
+// }
+else{
+  this.player1.body.setVelocityY(0);
+}
+if(this.moves.up.isDown){
+  this.player1.body.setVelocityY(-200);
+}
+    
   }
 }
