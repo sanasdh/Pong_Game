@@ -37,6 +37,7 @@ this.anims.create({
   this.ball.body.collideWorldBounds = true
   this.ball.body.bounce.set(1);
   this.ball.body.onWorldBounds = true;
+// this.createNewBall()
 
   // players
   this.player1=this.physics.add.sprite(5+this.ball.width/2*.025, game.config.height/2, "paddle")
@@ -78,11 +79,35 @@ let explosion = this.add.sprite(ball.x,ball.y,'exp');
 explosion.play('boom');
 ball.body.velocity.y=0
 ball.body.velocity.x=0
+this.time.addEvent({delay:900, callback:this.createNewBall , callbackScope: this, loop:false})
 
+// ball.destroy()
+
+// this.createNewBall()
+// this.physics.add.collider(this.ball,this.player1)
+// this.physics.add.collider(this.ball,this.player2)
+
+
+// ball.body.velocity.y=0
+// ball.body.velocity.x=0
 // ball.destroy()
     }
 
 }
+createNewBall(){
+  // this.ball.destroy()
+  // this.ball= this.physics.add.image(game.config.width/2,game.config.height/2,"ball")
+  this.ball.x=game.config.width/2
+  this.ball.y=game.config.height/2
+  // Align.scaleToGameW(this.ball,.025)
+  this.ball.setVelocity(350,350)
+  this.ball.body.collideWorldBounds = true
+  this.ball.body.bounce.set(1);
+  this.ball.body.onWorldBounds = true;
+  this.physics.add.collider(this.ball,this.player1)
+  this.physics.add.collider(this.ball,this.player2)
+}
+
   update(){
     this.onWorldBounds(this.ball.body)
 // // move paddle 2 for computer
