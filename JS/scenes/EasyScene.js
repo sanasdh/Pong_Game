@@ -5,9 +5,12 @@ class EasyScene extends Phaser.Scene {
   }
   preload()
   {
-    this.load.image("ball", "../Images/ball.png")
-    this.load.image('paddle', 'Images/paddle1.png')
-    this.load.spritesheet('exp', 'Images/exp.png',{frameWidth:64 , frameHeight:64})
+    this.load.image("ball", "../../Images/ball.png")
+    this.load.image('paddle', '../../Images/paddle1.png')
+    this.load.spritesheet('exp', '../../Images/exp.png',{frameWidth:64 , frameHeight:64})
+    this.load.audio('pong1','../../audio/pong1.wav')
+    this.load.audio('pong2','../../audio/pong2.wav')
+    this.load.audio('explosion','../../audio/explosion.wav')
 
   }
   create(){
@@ -23,7 +26,10 @@ this.anims.create({
   frameRate: 48,
   repeat:false
 })
-
+// sounds
+this.explosionSound= this.sound.add('explosion')
+this.pong1=this.sound.add('pong1')
+this.pong2=this.sound.add('pong2')
 
     // ball
   this.ball= this.physics.add.image(game.config.width/2,game.config.height/2,"ball")
@@ -32,30 +38,32 @@ this.anims.create({
   this.ball.body.collideWorldBounds = true
   this.ball.body.bounce.set(1);
   this.ball.body.onWorldBounds = true;
-// this.createNewBall()
 
   // players
   this.player1=this.physics.add.sprite(5+this.ball.width/2*.025, game.config.height/2, "paddle")
   Align.scaleToGameW(this.player1,.012)
-  this.physics.add.collider(this.ball,this.player1)
+  this.physics.add.collider(this.ball,this.player1,this.pongOneSound)
   this.player1.setImmovable(true)
   this.player1.body.collideWorldBounds = true
 
 
   this.player2=this.physics.add.sprite(game.config.width-this.ball.width/2*.025-5, game.config.height/2, "paddle")
   Align.scaleToGameW(this.player2,.012)
-  this.physics.add.collider(this.ball,this.player2)
+  this.physics.add.collider(this.ball,this.player2, this.pongTwoSound)
   this.player2.setImmovable(true)
   this.player2.body.collideWorldBounds = true
-// if you play against computer
+// player 2
   this.player2.body.velocity.setTo(this.ball.body.velocity.y);
   this.player2.body.velocity.x=0
   this.player2.body.maxVelocity.y=200;
-
   this.moves=this.input.keyboard.createCursorKeys();
 
-  
-
+}
+pongOneSound=()=>{
+  this.pong1.play()
+}
+pongTwoSound=()=>{
+  this.pong2.play()
 }
  onWorldBounds =(body)=>
 { 
@@ -65,6 +73,7 @@ this.anims.create({
     console.log("ball", ball);
     console.log("ball.x", ball.x);
     if(ball.x<=ball.width*.025|| ball.x>=game.config.width-ball.width*.025){
+this.explosionSound.play()
       console.log("*************");
       console.log("game.config.width-ball.width", game.config.width-ball.width)
       console.log("width", ball.width);
@@ -83,11 +92,13 @@ createNewBall(){
   this.ball.y=game.config.height/2
   // Align.scaleToGameW(this.ball,.025)
   this.ball.setVelocity(350,350)
+
   this.ball.body.collideWorldBounds = true
   this.ball.body.bounce.set(1);
   this.ball.body.onWorldBounds = true;
-  this.physics.add.collider(this.ball,this.player1)
-  this.physics.add.collider(this.ball,this.player2)
+  this.physics.add.collider(this.ball,this.player1,this.pongOneSound)
+  this.physics.add.collider(this.ball,this.player2,this.pongTwoSound)
+  
 }
 
   update(){
