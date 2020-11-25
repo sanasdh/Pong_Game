@@ -9,6 +9,8 @@ class SceneMain extends Phaser.Scene {
     // this.load.spritesheet('paddle', 'Images/paddle1.png',{frameWidth:76 , frameHeight:410})
     this.load.image('paddle', 'Images/paddle1.png')
     this.load.spritesheet('exp', 'Images/exp.png',{frameWidth:64 , frameHeight:64})
+    this.bar = new Bar({scene:this, x:240, y:320})
+
   }
   create(){
     emmiter = new Phaser.Events.EventEmitter() //should always be the first line , it alows us to talk globally to other parts of our game
@@ -63,9 +65,11 @@ this.anims.create({
   this.key.q= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q)
   this.key.w= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
   
+
 }
  onWorldBounds =(body)=>
-{
+{ 
+  // this.bar.width=this.bar.setPercent(.2)
   console.log("here");
   console.log("body", body);
     var ball = body.gameObject;
@@ -109,6 +113,7 @@ createNewBall(){
 }
 
   update(){
+
     this.onWorldBounds(this.ball.body)
 // // move paddle 2 for computer
 //     this.player2.body.velocity.setTo(this.ball.body.velocity.y);

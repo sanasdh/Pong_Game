@@ -13,7 +13,7 @@ physics:{
     gravity:false,
   debug: true}
 },
-scene: [SceneMain]
+scene: [PlayerScene,DifficultyScene,StartScene,SceneMain]
 }
 
 const game= new Phaser.Game(config)
