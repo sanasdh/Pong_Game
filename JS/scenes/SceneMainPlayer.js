@@ -15,12 +15,6 @@ class SceneMainPlayer extends Phaser.Scene {
   }
   create(){
     emmiter = new Phaser.Events.EventEmitter() //should always be the first line , it alows us to talk globally to other parts of our game
-    // controller = new Controller();
-      console.log("Ready!");
-      // model.score=100
-    // this.sb = new ScoreBox({scene: this});
-    // this.sb.x= game.config.width/2;
-    // this.sb.y= 50;
     let frameNames = this.anims.generateFrameNumbers('exp');
     let f2=frameNames.slice();
     f2.reverse();
@@ -46,25 +40,61 @@ this.pong2=this.sound.add('pong2')
   this.ball.body.onWorldBounds = true;
 
   // players
+  // player1
   this.player1=this.physics.add.sprite(5+this.ball.width/2*.025, game.config.height/2, "paddle")
   Align.scaleToGameW(this.player1,.012)
   this.physics.add.collider(this.ball,this.player1,this.pongOneSound)
   this.player1.setImmovable(true)
   this.player1.body.collideWorldBounds = true
+  score1Display= this.add.text(game.config.width/4,game.config.height/10,score1,{
+    font: "32px 'VT323'",
+    fill:"white",
+    align: "center"
+  })
+  player1Display= this.add.text(game.config.width/4,game.config.height/2,'Player 1',{
+    font: "64px 'VT323'",
+    fill:"white",
+    align: "center"
+  })
+  player1DisplayInfo=this.add.text(game.config.width/4,game.config.height*2/3,'↑ MOVES UP \n ↓ MOVES DOWN',{
+    font: "32px 'VT323'",
+    fill:"white",
+    align: "center"
+  })
+  score1Display.setOrigin(.5,.5)
+  player1Display.setOrigin(.5,.5)
+  player1DisplayInfo.setOrigin(.5,.5)
 
-
+  // player2
   this.player2=this.physics.add.sprite(game.config.width-this.ball.width/2*.025-5, game.config.height/2, "paddle")
   Align.scaleToGameW(this.player2,.012)
   this.physics.add.collider(this.ball,this.player2, this.pongTwoSound)
   this.player2.setImmovable(true)
   this.player2.body.collideWorldBounds = true
+  score2Display= this.add.text(game.config.width*3/4,game.config.height/10,score2,{
+    font: "32px 'VT323'",
+    fill:"white",
+    align: "center"
+  })
+  player2Display= this.add.text(game.config.width*3/4,game.config.height/2,'Player 2',{
+    font: "64px 'VT323'",
+    fill:"white",
+    align: "center"
+  })
+  player2DisplayInfo=this.add.text(game.config.width*3/4,game.config.height*2/3,'W MOVES UP \n S MOVES DOWN',{
+    font: "32px 'VT323'",
+    fill:"white",
+    align: "center"
+  })
+  score2Display.setOrigin(.5,.5)
+  player2Display.setOrigin(.5,.5)
+  player2DisplayInfo.setOrigin(.5,.5)
 
   // move players
   this.moves=this.input.keyboard.createCursorKeys();
-  this.key.q= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q)
+  this.key.s= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
   this.key.w= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
   
-
 }
 pongOneSound=()=>{
   this.pong1.play()
@@ -74,25 +104,51 @@ pongTwoSound=()=>{
 }
  onWorldBounds =(body)=>
 { 
-  console.log("here");
-  console.log("body", body);
+  // console.log("here");
+  // console.log("body", body);
     var ball = body.gameObject;
-    console.log("ball", ball);
-    console.log("ball.x", ball.x);
-    if(ball.x<=ball.width*.025|| ball.x>=game.config.width-ball.width*.025){
-      console.log("*************");
-      console.log("game.config.width-ball.width", game.config.width-ball.width)
-      console.log("width", ball.width);
+    // console.log("ball", ball);
+    // console.log("ball.x", ball.x);
+    // if(ball.x<=ball.width*.025|| ball.x>=game.config.width-ball.width*.025){
+      if(ball.body.blocked.left||ball.body.blocked.right){
+      if(ball.body.blocked.right){
+        score1+=1;
+        score1Display.text=score1
+        this.winnig()
+      }
+      if(ball.body.blocked.left){
+        score2+=1;
+        score2Display.text=score2
+        this.winnig()
+
+      }
+      // console.log("*************");
+      // console.log("game.config.width-ball.width", game.config.width-ball.width)
+      // console.log("width", ball.width);
 let explosion = this.add.sprite(ball.x,ball.y,'exp');
 this.explosionSound.play()
 
 explosion.play('boom');
 ball.body.velocity.y=0
 ball.body.velocity.x=0
+
 this.time.addEvent({delay:900, callback:this.createNewBall , callbackScope: this, loop:false})
 
     }
 
+}
+winnig(){
+  if(score2==7){
+    console.log("player 2 won");
+    // this.scene.start("PlayerScene")
+    this.scene.start('GameOver', 'player2','player1');
+  }
+  else if(score1==7){
+    console.log("player 1 won");
+    // this.scene.start("PlayerScene")
+    this.scene.start('GameOver', 'player1','player2');
+
+  }
 }
 createNewBall(){
   this.ball.x=game.config.width/2
@@ -115,19 +171,25 @@ createNewBall(){
 
 // move paddle 2 for player 2(not computer)
 if(this.key.w.isDown){
-  this.player2.body.velocity.y=200;
+  this.player2.body.velocity.y=-200;
+  player2Display.destroy()
+  player2DisplayInfo.destroy()
 }
 
 else{
   this.player2.body.setVelocityY(0);
 }
-if(this.key.q.isDown){
-  this.player2.body.setVelocityY(-200);
+if(this.key.s.isDown){
+  this.player2.body.setVelocityY(200);
+  player2Display.destroy()
+  player2DisplayInfo.destroy()
 }
 
 // user moves paddle1 
 if(this.moves.down.isDown){
   this.player1.body.velocity.y=200;
+  player1Display.destroy()
+  player1DisplayInfo.destroy()
 }
   // this.player1.body.setVelocityY(-200);
 // }
@@ -136,6 +198,9 @@ else{
 }
 if(this.moves.up.isDown){
   this.player1.body.setVelocityY(-200);
+  player1Display.destroy()
+  player1DisplayInfo.destroy()
+
 }
     
   }

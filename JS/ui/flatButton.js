@@ -24,11 +24,19 @@ class FlatButton extends Phaser.GameObjects.Container
 		{
 			if (config.textConfig)
 			{
-				this.text1=this.scene.add.text(0,0,config.text,config.textConfig);
+				this.text1=this.scene.add.text(0,0,config.text,config.textConfig,{
+					font: "24px 'VT323'",
+					fill:"white",
+					align: "center"
+				});
 			}
 			else
 			{
-				this.text1=this.scene.add.text(0,0,config.text);
+				this.text1=this.scene.add.text(0,0,config.text,{
+					font: "24px 'VT323'",
+					fill:"white",
+					align: "center"
+				});;
 			}
 			
 			this.text1.setOrigin(0.5,0.5);

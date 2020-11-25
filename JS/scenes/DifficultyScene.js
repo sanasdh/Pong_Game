@@ -12,7 +12,7 @@ class DifficultyScene extends Phaser.Scene {
   create(){
     emitter =new Phaser.Events.EventEmitter();
 this.levels= this.add.text(game.config.width/2,game.config.height/5,'Select The Difficulty Level',{
-  font: "64px Gabriella",
+  font: "64px 'VT323'",
   fill:"white",
   align: "center"
 })
