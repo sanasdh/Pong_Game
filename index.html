@@ -4,17 +4,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link href="./css/styles.css" rel="stylesheet" type="text/css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link rel="icon" href="./Images/pacman.png">
+  <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+  <title>Pong</title>
   <script defer src="js/phaser.min.js"></script>
   <script defer src="js/util/align.js"></script>
-
   <script defer src="js/ui/flatButton.js"></script>
   <script src="js/controller.js"></script>
   <script defer src="js/scenes/SceneMainPlayer.js"></script>
   <script defer src="js/scenes/DifficultyScene.js"></script>
   <script defer src="js/scenes/PlayerScene.js"></script>
+  <script defer src="js/scenes/go/GameOver.js"></script>
+  <script defer src="js/popUp.js"></script>
   <script defer src="js/scenes/EasyScene.js"></script>
-  <script defer src="js/bar.js"></script>
   <script defer src='js/main.js'></script>
   <!-- <script src="js/scenes/sceneTitle.js"></script>
   <script src="js/scenes/sceneOver.js"></script>
@@ -33,6 +39,29 @@
 
 <body>
   <div id="pong"></div>
+  <div class="pacman">
+    <img src="./Images/pacman.png" id="pacman" class="pacman">
+  </div>
+
+  <!-- The Modal -->
+  <div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p id="one">Hi there, I'm Pacman, you know me, right? <br /> I'm here to help you. if you don't need me, you can
+        click
+        anywhere outside of this box to close this. I'll be here for you at the bottom left corner. But if you need my
+        help, click "Next" so I can show you my tricks</p>
+      <p id="two" hidden>
+        You can choose to play with computer or your firend in the same computer. If you choose to play with computer,
+        you can select the difficulty level of the game (no one has won the hard level so far!)
+      </p>
+      <p id="three" hidden>
+        If you choose to play with your friend, player one should user the arrow keys, and player2 should use the AWSD
+        keys. Whoever score 7 first will win the game.
+      </p>
+      <button id="next" onclick="nextFunction()">Next</button>
+    </div>
 </body>
 
 </html>

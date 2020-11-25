@@ -8,12 +8,12 @@ this.load.image("btn1","../../Images/btn2.png")
   create(){
     emitter =new Phaser.Events.EventEmitter();
 this.welcome= this.add.text(game.config.width/2,game.config.height/4,'Welcome to Pong',{
-  font: "64px Gabriella",
+  font: '64px "VT323"',
   fill:"white",
   align: "center"
 })
-this.opponent= this.add.text(game.config.width/2,game.config.height/2,'Choose your player',{
-  font: "32px Gabriella",
+this.opponent= this.add.text(game.config.width/2,game.config.height/2,'Choose Your Opponent',{
+  font: "32px 'VT323'",
   fill:"white",
   align: "center"
 })
@@ -41,6 +41,7 @@ this.scene.start("SceneMainPlayer")
   computerFunc(){
     console.log("here!");
     this.scene.start("DifficultyScene")
+    console.log(this.scene.start("DifficultyScene"));
 
   }
   update(){
