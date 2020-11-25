@@ -1,6 +1,6 @@
-class SceneMain extends Phaser.Scene {
+class SceneMainPlayer extends Phaser.Scene {
   constructor() {
-      super('SceneMain'); //make sure the string in super is exactly like the class name
+      super('SceneMainPlayer'); //make sure the string in super is exactly like the class name
       this.key={}
   }
   preload()
@@ -9,6 +9,7 @@ class SceneMain extends Phaser.Scene {
     // this.load.spritesheet('paddle', 'Images/paddle1.png',{frameWidth:76 , frameHeight:410})
     this.load.image('paddle', 'Images/paddle1.png')
     this.load.spritesheet('exp', 'Images/exp.png',{frameWidth:64 , frameHeight:64})
+
   }
   create(){
     emmiter = new Phaser.Events.EventEmitter() //should always be the first line , it alows us to talk globally to other parts of our game
@@ -41,14 +42,14 @@ this.anims.create({
 
   // players
   this.player1=this.physics.add.sprite(5+this.ball.width/2*.025, game.config.height/2, "paddle")
-  Align.scaleToGameW(this.player1,.015)
+  Align.scaleToGameW(this.player1,.012)
   this.physics.add.collider(this.ball,this.player1)
   this.player1.setImmovable(true)
   this.player1.body.collideWorldBounds = true
 
 
   this.player2=this.physics.add.sprite(game.config.width-this.ball.width/2*.025-5, game.config.height/2, "paddle")
-  Align.scaleToGameW(this.player2,.015)
+  Align.scaleToGameW(this.player2,.012)
   this.physics.add.collider(this.ball,this.player2)
   this.player2.setImmovable(true)
   this.player2.body.collideWorldBounds = true
@@ -63,9 +64,10 @@ this.anims.create({
   this.key.q= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q)
   this.key.w= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
   
+
 }
  onWorldBounds =(body)=>
-{
+{ 
   console.log("here");
   console.log("body", body);
     var ball = body.gameObject;
@@ -109,6 +111,7 @@ createNewBall(){
 }
 
   update(){
+
     this.onWorldBounds(this.ball.body)
 // // move paddle 2 for computer
 //     this.player2.body.velocity.setTo(this.ball.body.velocity.y);

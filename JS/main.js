@@ -1,3 +1,4 @@
+let emitter;
 const config = {
   type: Phaser.AUTO,
   parent: 'pong',
@@ -13,8 +14,9 @@ physics:{
     gravity:false,
   debug: true}
 },
-scene: [SceneMain]
+scene: [PlayerScene,DifficultyScene,EasyScene,SceneMainPlayer]
 }
 
 const game= new Phaser.Game(config)
 let emmiter;
+
