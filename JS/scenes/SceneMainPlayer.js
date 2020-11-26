@@ -14,6 +14,9 @@ class SceneMainPlayer extends Phaser.Scene {
     this.load.audio('pong1','../../audio/pong1.wav')
     this.load.audio('pong2','../../audio/pong2.wav')
     this.load.audio('explosion','../../audio/explosion.wav')
+    this.gameStart=false
+    this.gameStartPlayer2=true
+
   }
   create(){
     emmiter = new Phaser.Events.EventEmitter() 
@@ -48,9 +51,10 @@ this.pong2=this.sound.add('pong2')
 
 
     // ball
-  this.ball= this.physics.add.image(game.config.width/2,game.config.height/2,"ball")
+  // this.ball= this.physics.add.image(game.config.width/2,game.config.height/2,"ball")
+    this.ball= this.physics.add.image(30,game.config.height/2,"ball")
   Align.scaleToGameW(this.ball,.025)
-  this.ball.setVelocity(350,350)
+  // this.ball.setVelocity(350,350)
   this.ball.body.collideWorldBounds = true
   this.ball.body.bounce.set(1);
   this.ball.body.onWorldBounds = true;
@@ -116,7 +120,9 @@ this.pong2=this.sound.add('pong2')
   this.moves=this.input.keyboard.createCursorKeys();
   this.key.s= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S)
   this.key.w= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
-  
+  this.key.a= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A)
+  this.key.d= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+
 }
 soundFunction(){
   this.countToggle++
@@ -152,13 +158,16 @@ home(){
 { 
     var ball = body.gameObject;
       if(ball.body.blocked.left||ball.body.blocked.right){
+        this.ball.setVelocity(0,0)
       if(ball.body.blocked.right){
         score1+=1;
         score1Display.text=score1
+        this.gameStart=false
         this.winnig()
       }
       if(ball.body.blocked.left){
         score2+=1;
+        this.gameStartPlayer2=false
         score2Display.text=score2
         this.winnig()
 
@@ -196,14 +205,22 @@ winnig(){
   }
 }
 createNewBall(){
-  this.ball.x=game.config.width/2
-  this.ball.y=game.config.height/2
-  this.ball.setVelocity(350,350)
+  if(!this.gameStart){
+    this.ball.x=this.player1.x+20
+    this.ball.y=this.player1.y
+  }
+ if(!this.gameStartPlayer2){
+  this.ball.x=this.player2.x-20
+  this.ball.y=this.player2.y
+ }
+  // this.ball.setVelocity(350,350)
   this.ball.body.collideWorldBounds = true
   this.ball.body.bounce.set(1);
   this.ball.body.onWorldBounds = true;
   this.physics.add.collider(this.ball,this.player1,this.pongOneSound)
   this.physics.add.collider(this.ball,this.player2,this.pongTwoSound)
+  this.ball.setVelocity(0,0)
+
 }
 
   update(){
@@ -211,6 +228,9 @@ createNewBall(){
     this.onWorldBounds(this.ball.body)
 // move paddle 2 for player 2(not computer)
 if(this.key.w.isDown){
+  if(!this.gameStartPlayer2){
+    this.ball.y=this.player2.y
+  }
   this.player2.body.velocity.y=-200;
   player2Display.destroy()
   player2DisplayInfo.destroy()
@@ -220,13 +240,37 @@ else{
   this.player2.body.setVelocityY(0);
 }
 if(this.key.s.isDown){
+  if(!this.gameStartPlayer2){
+    this.ball.y=this.player2.y
+  }
   this.player2.body.setVelocityY(200);
   player2Display.destroy()
   player2DisplayInfo.destroy()
 }
-
+if(this.key.a.isDown && this.player2.x>=game.config.width*3/4){
+  if(!this.gameStartPlayer2){
+    this.ball.setVelocity(0,0)
+    this.gameStart=true
+    this.gameStartPlayer2=true
+    this.ball.setVelocity(-350,-350)
+  }
+  this.player2.body.velocity.x=-100;
+  player2Display.destroy()
+  player2DisplayInfo.destroy()
+}
+else{
+  this.player2.body.setVelocityX(0);
+}
+if(this.key.d.isDown){
+  this.player2.body.velocity.x=100;
+  player2Display.destroy()
+  player2DisplayInfo.destroy()
+}
 // user moves paddle1 
 if(this.moves.down.isDown){
+  if(!this.gameStart){
+    this.ball.y=this.player1.y
+  }
   this.player1.body.velocity.y=200;
   player1Display.destroy()
   player1DisplayInfo.destroy()
@@ -235,11 +279,31 @@ else{
   this.player1.body.setVelocityY(0);
 }
 if(this.moves.up.isDown){
+  if(!this.gameStart){
+    this.ball.y=this.player1.y
+  }
   this.player1.body.setVelocityY(-200);
   player1Display.destroy()
   player1DisplayInfo.destroy()
-
 }
-    
+if(this.moves.right.isDown && this.player1.x<=game.config.width/4){
+  if(!this.gameStart){
+    this.ball.setVelocity(0,0)
+    this.gameStart=true
+    this.gameStartPlayer2=true
+    this.ball.setVelocity(350,350)
+  }
+  this.player1.body.velocity.x=100;
+  player1Display.destroy()
+  player1DisplayInfo.destroy()
+}
+else{
+  this.player1.body.setVelocityX(0);
+}
+if(this.moves.left.isDown){
+  this.player1.body.velocity.x=-100;
+  player1Display.destroy()
+  player1DisplayInfo.destroy()
+}  
   }
 }
