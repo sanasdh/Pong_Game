@@ -15,7 +15,8 @@ physics:{
   default: 'arcade',
   arcade: {
     gravity:false,
-  debug: false}
+  debug: false
+}
 },
 scene: [PlayerScene,DifficultyScene,EasyScene,SceneMainPlayer, GameOver, StartScene]
 }

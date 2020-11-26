@@ -185,7 +185,7 @@ winnig(){
     lost=`Better luck ${player1Name}`
     this.scene.start('GameOver');
   }
-  else if(score1==1){
+  else if(score1==7){
     score1=score2=0
     // won="player1"
     won=player1Name

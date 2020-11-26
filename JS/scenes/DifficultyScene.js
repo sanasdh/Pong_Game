@@ -4,7 +4,7 @@ class DifficultyScene extends Phaser.Scene {
   }
   preload(){
     this.load.image("btn","../../Images/btn.png")
-    this.load.image("btn1","../../Images/back.png")
+    this.load.image("back","../../Images/back.png")
     this.load.image("btn2","../../Images/btn3.png")
     this.load.image("btn3","../../Images/btn4.png")
 
