@@ -43,13 +43,15 @@ emitter.on('hard', this.hardFunc, this);
   }
   easyFunc(){
     this.scene.start("EasyScene")
-
+    levelspeed=150
   }
   mediumFunc(){
-
+    this.scene.start("EasyScene")
+    levelspeed=200
   }
   hardFunc(){
-
+    this.scene.start("EasyScene")
+    levelspeed=270
   }
   update(){
     

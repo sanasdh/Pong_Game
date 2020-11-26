@@ -5,13 +5,15 @@ class SceneMainPlayer extends Phaser.Scene {
   }
   preload()
   {
-    this.load.image("ball", "../Images/ball.png")
-    this.load.image('paddle', 'Images/paddle1.png')
+    this.load.image("ball", "../../Images/ball.png")
+    this.load.image('paddle', '../../Images/paddle1.png')
+    this.load.image("home", "Images/home.png")
+    this.load.image("on","Images/on.png")
+    this.load.image("off","Images/off.png")
     this.load.spritesheet('exp', 'Images/exp.png',{frameWidth:64 , frameHeight:64})
     this.load.audio('pong1','../../audio/pong1.wav')
     this.load.audio('pong2','../../audio/pong2.wav')
     this.load.audio('explosion','../../audio/explosion.wav')
-
   }
   create(){
     emmiter = new Phaser.Events.EventEmitter() //should always be the first line , it alows us to talk globally to other parts of our game
@@ -25,6 +27,20 @@ this.anims.create({
   frameRate: 48,
   repeat:false
 })
+let x3=game.config.width/10
+let x4=game.config.width/10*9
+let y3=game.config.height/10
+
+let home= new FlatButton({scene:this, key:'home',x:x3,y:y3, event:'home'})
+emitter.on('home', this.home, this);
+this.on= new FlatButton({scene:this, key:'on',x:x4,y:y3, event:'sound'})
+this.off= new FlatButton({scene:this, key:'off',x:x4,y:y3, event:'sound'})
+this.on.visible=true;
+this.off.visible=false;
+this.countToggle=0;
+
+emitter.on('sound', this.soundFunction, this);
+
 // sounds
 this.explosionSound= this.sound.add('explosion')
 this.pong1=this.sound.add('pong1')
@@ -96,20 +112,39 @@ this.pong2=this.sound.add('pong2')
   this.key.w= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W)
   
 }
+soundFunction(){
+  this.countToggle++
+  if(this.countToggle%2==0){
+    this.on.visible=true;
+    this.off.visible=false;
+    this.explosionSound= this.sound.add('explosion')
+this.pong1=this.sound.add('pong1')
+this.pong2=this.sound.add('pong2')
+  }else{
+    this.on.visible=false;
+    this.off.visible=true;
+    this.pong1=null
+    this.pong2=null
+    this.explosionSound=null
+  }
+}
 pongOneSound=()=>{
+  if(this.pong1){
   this.pong1.play()
+  }
 }
 pongTwoSound=()=>{
-  this.pong2.play()
+  if(this.pong2){
+    this.pong2.play()
+    }
+  }
+home(){
+  score1=score2=0
+  this.scene.start("PlayerScene")
 }
  onWorldBounds =(body)=>
 { 
-  // console.log("here");
-  // console.log("body", body);
     var ball = body.gameObject;
-    // console.log("ball", ball);
-    // console.log("ball.x", ball.x);
-    // if(ball.x<=ball.width*.025|| ball.x>=game.config.width-ball.width*.025){
       if(ball.body.blocked.left||ball.body.blocked.right){
       if(ball.body.blocked.right){
         score1+=1;
@@ -122,11 +157,10 @@ pongTwoSound=()=>{
         this.winnig()
 
       }
-      // console.log("*************");
-      // console.log("game.config.width-ball.width", game.config.width-ball.width)
-      // console.log("width", ball.width);
 let explosion = this.add.sprite(ball.x,ball.y,'exp');
-this.explosionSound.play()
+if(this.explosionSound){
+  this.explosionSound.play()
+}
 
 explosion.play('boom');
 ball.body.velocity.y=0
@@ -139,15 +173,20 @@ this.time.addEvent({delay:900, callback:this.createNewBall , callbackScope: this
 }
 winnig(){
   if(score2==7){
+    score1=score2=0
     console.log("player 2 won");
+    won="player2"
+    lost="Better luck Player1"
     // this.scene.start("PlayerScene")
-    this.scene.start('GameOver', 'player2','player1');
+    this.scene.start('GameOver');
   }
   else if(score1==7){
+    score1=score2=0
     console.log("player 1 won");
+    won="player1"
+    lost="Better luck Player2"
     // this.scene.start("PlayerScene")
-    this.scene.start('GameOver', 'player1','player2');
-
+    this.scene.start('GameOver');
   }
 }
 createNewBall(){

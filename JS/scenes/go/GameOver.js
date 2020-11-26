@@ -1,13 +1,9 @@
 class GameOver extends Phaser.Scene {
-  constructor(winner,looser){
+  constructor(){
     super("GameOver")
-    this.winner=winner;
-    this.looser=looser;
   }
   preload(){
     console.log("here!!!! go");
-    console.log("winner", this.winner)
-    console.log("looser",this.looser);
     this.load.image("btn1","../../../Images/btn2.png")
 
   }
@@ -19,7 +15,7 @@ class GameOver extends Phaser.Scene {
         fill:"white",
         align: "center"
       })
-     this.msg=this.add.text(game.config.width/2,game.config.height/2,`${this.winner} Won \n Better luck ${this.looser}`,{
+     this.msg=this.add.text(game.config.width/2,game.config.height/2,`${won} Won \n  ${lost}`,{
         font: "32px 'VT323'",
         fill:"white",
         align: "center"
@@ -36,7 +32,11 @@ class GameOver extends Phaser.Scene {
       emitter.on('home', this.home, this);
     }
     playAgain(){
-      this.scene.start("SceneMainPlayer")
+      if(lost=="Better luck Player1"||lost=="Better luck Player2"){
+        this.scene.start("SceneMainPlayer")
+      } else if(lost=="Don't take it personally Player1"||lost=="You deafeted the MACHINE!"){
+        this.scene.start("DifficultyScene")
+      }
         }
         home(){
       this.scene.start("PlayerScene")

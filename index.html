@@ -4,9 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="./css/styles.css" rel="stylesheet" type="text/css" />
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/3c87542d87.js" crossorigin="anonymous"></script>
+  <link href="./css/styles.css" rel="stylesheet" type="text/css" />
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link rel="icon" href="./Images/pacman.png">
   <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
@@ -14,7 +15,6 @@
   <script defer src="js/phaser.min.js"></script>
   <script defer src="js/util/align.js"></script>
   <script defer src="js/ui/flatButton.js"></script>
-  <script src="js/controller.js"></script>
   <script defer src="js/scenes/SceneMainPlayer.js"></script>
   <script defer src="js/scenes/DifficultyScene.js"></script>
   <script defer src="js/scenes/PlayerScene.js"></script>
@@ -22,19 +22,6 @@
   <script defer src="js/popUp.js"></script>
   <script defer src="js/scenes/EasyScene.js"></script>
   <script defer src='js/main.js'></script>
-  <!-- <script src="js/scenes/sceneTitle.js"></script>
-  <script src="js/scenes/sceneOver.js"></script>
-  <script src="js/scenes/sceneLoad.js"></script>
-  <script src="js/constants.js"></script>
-  <script src="js/classes/mc/model.js"></script>
-  <script src="js/classes/mc/controller.js"></script>
-  <script src="js/classes/comps/scoreBox.js"></script>
-  <script src="js/classes/comps/bar.js"></script> -->
-  <!-- <script src="js/classes/util/alignGrid.js"></script>
-  <script src="js/classes/ui/flatButton.js"></script>
-  <script src="js/classes/util/mediaManager.js"></script>
-  <script src="js/classes/ui/toggleButton.js"></script>
-  <script src="js/classes/ui/soundButtons.js"></script> -->
 </head>
 
 <body>
@@ -43,6 +30,17 @@
     <img src="./Images/pacman.png" id="pacman" class="pacman">
   </div>
 
+  <div id="info">
+    <a href="https://github.com/sanasdh" target="_blank">
+      <i class="fab fa-github-alt"></i>
+    </a>
+    <a href="https://www.linkedin.com/in/sana-sadeh" target="_blank">
+      <i class="fab fa-linkedin-in"></i>
+    </a>
+    <a href="https://sanasdh@gmail.com" target="_blank">
+      <i class="fas fa-envelope"></i>
+    </a>
+  </div>
   <!-- The Modal -->
   <div id="myModal" class="modal">
     <!-- Modal content -->
@@ -62,6 +60,9 @@
       </p>
       <button id="next" onclick="nextFunction()">Next</button>
     </div>
+  </div>
+  <footer> © 2020 Sana Sadeh</footer>
+
 </body>
 
 </html>
