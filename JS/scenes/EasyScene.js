@@ -5,6 +5,7 @@ class EasyScene extends Phaser.Scene {
   }
   preload()
   {
+    this.load.image("line","Images/line.png")
     this.load.image("ball", "../../Images/ball.png")
     this.load.image('paddle', '../../Images/paddle1.png')
     this.load.image("home", "Images/home.png")
@@ -14,6 +15,8 @@ class EasyScene extends Phaser.Scene {
     this.load.audio('pong1','../../audio/pong1.wav')
     this.load.audio('pong2','../../audio/pong2.wav')
     this.load.audio('explosion','../../audio/explosion.wav')
+    this.gameStart=false
+    this.gameStartPlayer2=true
 
   }
   create(){
@@ -42,6 +45,7 @@ this.off.visible=false;
 this.countToggle=0;
 
 emitter.on('sound', this.soundFunction, this);
+this.line=this.add.image(game.config.width/2-2,0,"line")
 
 // sounds
 this.explosionSound= this.sound.add('explosion')
@@ -49,9 +53,9 @@ this.pong1=this.sound.add('pong1')
 this.pong2=this.sound.add('pong2')
 
     // ball
-  this.ball= this.physics.add.image(game.config.width/2,game.config.height/2,"ball")
+  this.ball= this.physics.add.image(30,game.config.height/2,"ball")
   Align.scaleToGameW(this.ball,.025)
-  this.ball.setVelocity(350,350)
+  // this.ball.setVelocity(350,350)
   this.ball.body.collideWorldBounds = true
   this.ball.body.bounce.set(1);
   this.ball.body.onWorldBounds = true;
@@ -68,12 +72,12 @@ this.pong2=this.sound.add('pong2')
     fill:"white",
     align: "center"
   })
-  player1Display= this.add.text(game.config.width/4,game.config.height/2,'Player 1',{
+  player1Display= this.add.text(game.config.width/4,game.config.height/2,'YOUR SIDE',{
     font: "64px 'VT323'",
     fill:"white",
     align: "center"
   })
-  player1DisplayInfo=this.add.text(game.config.width/4,game.config.height*2/3,'↑ MOVES UP \n ↓ MOVES DOWN',{
+  player1DisplayInfo=this.add.text(game.config.width/4,game.config.height*3/4,'↑ MOVES UP \n ↓ MOVES DOWN\n ← → TO SERVE',{
     font: "32px 'VT323'",
     fill:"white",
     align: "center"
@@ -144,13 +148,16 @@ home(){
 { 
     var ball = body.gameObject;
       if(ball.body.blocked.left||ball.body.blocked.right){
+        this.ball.setVelocity(0,0)
         if(ball.body.blocked.right){
           score1+=1;
+          this.gameStart=false
           score1Display.text=score1
           this.winnig()
         }
         if(ball.body.blocked.left){
           score2+=1;
+          this.gameStartPlayer2=false
           score2Display.text=score2
           this.winnig()
   
@@ -181,28 +188,41 @@ winnig(){
   }
 }
 createNewBall(){
-  this.ball.x=game.config.width/2
-  this.ball.y=game.config.height/2
-  this.ball.setVelocity(350,350)
-
+  // this.ball.x=game.config.width/2
+  // this.ball.y=game.config.height/2
+  // this.ball.setVelocity(350,350)
+  if(!this.gameStart){
+    this.ball.x=this.player1.x+20
+    this.ball.y=this.player1.y
+  }
+ if(!this.gameStartPlayer2){
+   console.log("here!");
+  this.ball.x=this.player2.x-20
+  this.ball.y=this.player2.y
+  this.ball.setVelocity(-350,-350)
+  this.gameStart=true
+  this.gameStartPlayer2=true
+ }
   this.ball.body.collideWorldBounds = true
   this.ball.body.bounce.set(1);
   this.ball.body.onWorldBounds = true;
   this.physics.add.collider(this.ball,this.player1,this.pongOneSound)
   this.physics.add.collider(this.ball,this.player2,this.pongTwoSound)
-  
+
 }
 
   update(){
 
     this.onWorldBounds(this.ball.body)
- // move paddle 2 for computer
     this.player2.body.velocity.setTo(this.ball.body.velocity.y);
     this.player2.body.velocity.x=0
     this.player2.body.maxVelocity.y=levelspeed;
 
 // user moves paddle1 
 if(this.moves.down.isDown){
+  if(!this.gameStart){
+    this.ball.y=this.player1.y
+  }
   this.player1.body.velocity.y=200;
   player1Display.destroy()
   player1DisplayInfo.destroy()
@@ -212,12 +232,22 @@ else{
   this.player1.body.setVelocityY(0);
 }
 if(this.moves.up.isDown){
+  if(!this.gameStart){
+    this.ball.y=this.player1.y
+  }
   this.player1.body.setVelocityY(-200);
   player1Display.destroy()
   player1DisplayInfo.destroy()
   player2Display.destroy()
-
 }
+if((this.moves.right.isDown || this.moves.left.isDown ) && !this.gameStart){
+    this.ball.setVelocity(0,0)
+    this.gameStart=true
+    this.gameStartPlayer2=true
+    this.ball.setVelocity(350,350)
+  }
+
+
     
   }
 }

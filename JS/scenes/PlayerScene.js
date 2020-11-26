@@ -25,7 +25,7 @@ let x=game.config.width/4
 let x2=game.config.width*3/4
 let y=game.config.height*3/4
 let btn1= new FlatButton({scene:this, key:'btn1', text:'Computer',x,y, event:'computer'})
-let btn2= new FlatButton({scene:this, key:'btn1', text:'Player 2',x:x2,y, event:'human'})
+let btn2= new FlatButton({scene:this, key:'btn1', text:'Friend',x:x2,y, event:'human'})
  
 
 emitter.on('human', this.humanFunc, this);

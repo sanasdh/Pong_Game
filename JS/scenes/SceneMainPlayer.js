@@ -5,6 +5,7 @@ class SceneMainPlayer extends Phaser.Scene {
   }
   preload()
   {
+    this.load.image("line","Images/line.png")
     this.load.image("ball", "../../Images/ball.png")
     this.load.image('paddle', '../../Images/paddle1.png')
     this.load.image("home", "Images/home.png")
@@ -41,8 +42,9 @@ this.off= new FlatButton({scene:this, key:'off',x:x4,y:y3, event:'sound'})
 this.on.visible=true;
 this.off.visible=false;
 this.countToggle=0;
-
 emitter.on('sound', this.soundFunction, this);
+
+this.line=this.add.image(game.config.width/2-2,0,"line")
 
 // sounds
 this.explosionSound= this.sound.add('explosion')
@@ -51,10 +53,8 @@ this.pong2=this.sound.add('pong2')
 
 
     // ball
-  // this.ball= this.physics.add.image(game.config.width/2,game.config.height/2,"ball")
     this.ball= this.physics.add.image(30,game.config.height/2,"ball")
   Align.scaleToGameW(this.ball,.025)
-  // this.ball.setVelocity(350,350)
   this.ball.body.collideWorldBounds = true
   this.ball.body.bounce.set(1);
   this.ball.body.onWorldBounds = true;
@@ -79,7 +79,7 @@ this.pong2=this.sound.add('pong2')
     fill:"white",
     align: "center"
   })
-  player1DisplayInfo=this.add.text(game.config.width/4,game.config.height*2/3,'↑ MOVES UP \n ↓ MOVES DOWN',{
+  player1DisplayInfo=this.add.text(game.config.width/4,game.config.height*3/4,'↑ MOVES UP \n ↓ MOVES DOWN\n → MOVES RIGHT/SERVE \n← MOVES LEFT/SERVE',{
     font: "32px 'VT323'",
     fill:"white",
     align: "center"
@@ -107,7 +107,7 @@ this.pong2=this.sound.add('pong2')
     fill:"white",
     align: "center"
   })
-  player2DisplayInfo=this.add.text(game.config.width*3/4,game.config.height*2/3,'W MOVES UP \n S MOVES DOWN',{
+  player2DisplayInfo=this.add.text(game.config.width*3/4,game.config.height*3/4,'W MOVES UP \n S MOVES DOWN \n D MOVES RIGHT/SERVE \n A MOVES LEFT/SERVE',{
     font: "32px 'VT323'",
     fill:"white",
     align: "center"
@@ -266,6 +266,8 @@ if(this.key.d.isDown){
   player2Display.destroy()
   player2DisplayInfo.destroy()
 }
+
+
 // user moves paddle1 
 if(this.moves.down.isDown){
   if(!this.gameStart){
@@ -301,6 +303,12 @@ else{
   this.player1.body.setVelocityX(0);
 }
 if(this.moves.left.isDown){
+  if(!this.gameStart){
+    this.ball.setVelocity(0,0)
+    this.gameStart=true
+    this.gameStartPlayer2=true
+    this.ball.setVelocity(350,350)
+  }
   this.player1.body.velocity.x=-100;
   player1Display.destroy()
   player1DisplayInfo.destroy()
