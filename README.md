@@ -6,7 +6,7 @@ During the game you can click on the Pacman, on the bottom left corner to get so
 [YouTube video](https://www.youtube.com/watch?v=tHhgX4eT6go&feature=youtu.be) on how to play the game
 
 
-![Alt Beginning of the game]()
+![Alt Beginning of the game](https://github.com/sanasdh/Pong_Game/blob/master/pongPic.JPG?raw=true)
 
 
 ## technologies used
