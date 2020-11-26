@@ -3,7 +3,6 @@ class GameOver extends Phaser.Scene {
     super("GameOver")
   }
   preload(){
-    console.log("here!!!! go");
     this.load.image("btn1","../../../Images/btn2.png")
 
   }
@@ -32,9 +31,9 @@ class GameOver extends Phaser.Scene {
       emitter.on('home', this.home, this);
     }
     playAgain(){
-      if(lost=="Better luck Player1"||lost=="Better luck Player2"){
+      if(lost==`Better luck ${player1Name}`||lost==`Better luck ${player2Name}`){
         this.scene.start("SceneMainPlayer")
-      } else if(lost=="Don't take it personally Player1"||lost=="You deafeted the MACHINE!"){
+      } else if(lost=="Don't take it personally!"||lost=="You deafeted the MACHINE!"){
         this.scene.start("DifficultyScene")
       }
         }

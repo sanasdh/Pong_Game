@@ -1,6 +1,6 @@
 class SceneMainPlayer extends Phaser.Scene {
   constructor() {
-      super('SceneMainPlayer'); //make sure the string in super is exactly like the class name
+      super('SceneMainPlayer');
       this.key={}
   }
   preload()
@@ -16,7 +16,7 @@ class SceneMainPlayer extends Phaser.Scene {
     this.load.audio('explosion','../../audio/explosion.wav')
   }
   create(){
-    emmiter = new Phaser.Events.EventEmitter() //should always be the first line , it alows us to talk globally to other parts of our game
+    emmiter = new Phaser.Events.EventEmitter() 
     let frameNames = this.anims.generateFrameNumbers('exp');
     let f2=frameNames.slice();
     f2.reverse();
@@ -67,7 +67,10 @@ this.pong2=this.sound.add('pong2')
     fill:"white",
     align: "center"
   })
-  player1Display= this.add.text(game.config.width/4,game.config.height/2,'Player 1',{
+  if(player1Name==null||player1Name==""){
+    player1Name="Player 1"
+  }
+  player1Display= this.add.text(game.config.width/4,game.config.height/2,player1Name,{
     font: "64px 'VT323'",
     fill:"white",
     align: "center"
@@ -92,7 +95,10 @@ this.pong2=this.sound.add('pong2')
     fill:"white",
     align: "center"
   })
-  player2Display= this.add.text(game.config.width*3/4,game.config.height/2,'Player 2',{
+  if(player2Name==null||player2Name==""){
+    player2Name="Player 2"
+  }
+  player2Display= this.add.text(game.config.width*3/4,game.config.height/2,player2Name,{
     font: "64px 'VT323'",
     fill:"white",
     align: "center"
@@ -174,18 +180,18 @@ this.time.addEvent({delay:900, callback:this.createNewBall , callbackScope: this
 winnig(){
   if(score2==7){
     score1=score2=0
-    console.log("player 2 won");
-    won="player2"
-    lost="Better luck Player1"
-    // this.scene.start("PlayerScene")
+    // won="player2"
+    won=player2Name
+    lost=`Better luck ${player1Name}`
     this.scene.start('GameOver');
   }
-  else if(score1==7){
+  else if(score1==1){
     score1=score2=0
-    console.log("player 1 won");
-    won="player1"
-    lost="Better luck Player2"
-    // this.scene.start("PlayerScene")
+    // won="player1"
+    won=player1Name
+    // lost="Better luck Player2"
+    lost=`Better luck ${player2Name}`
+
     this.scene.start('GameOver');
   }
 }
@@ -203,11 +209,6 @@ createNewBall(){
   update(){
 
     this.onWorldBounds(this.ball.body)
-// // move paddle 2 for computer
-//     this.player2.body.velocity.setTo(this.ball.body.velocity.y);
-//     this.player2.body.velocity.x=0
-//     this.player2.body.maxVelocity.y=200;
-
 // move paddle 2 for player 2(not computer)
 if(this.key.w.isDown){
   this.player2.body.velocity.y=-200;
@@ -230,8 +231,6 @@ if(this.moves.down.isDown){
   player1Display.destroy()
   player1DisplayInfo.destroy()
 }
-  // this.player1.body.setVelocityY(-200);
-// }
 else{
   this.player1.body.setVelocityY(0);
 }

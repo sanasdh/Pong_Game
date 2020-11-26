@@ -4,12 +4,10 @@ class FlatButton extends Phaser.GameObjects.Container
 	{
 		if (!config.scene)
 		{
-			console.log("missing scene!");
 			return;
 		}
 		if (!config.key)
 		{
-			console.log("missing key");
 			return;
 		}
 		super(config.scene);
@@ -59,11 +57,6 @@ class FlatButton extends Phaser.GameObjects.Container
 			this.back.setInteractive();
 			this.back.on('pointerdown',this.pressed,this)
 		}
-		// if (model.isMobile==-1)
-		// {
-		// 	this.back.on("pointerover",this.over,this);
-		// 	this.back.on("pointerout",this.out,this);
-		// }
 	}
 	over()
 	{
