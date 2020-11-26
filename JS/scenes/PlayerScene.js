@@ -22,9 +22,7 @@ this.opponent.setOrigin(.5,.5)
 
 // buttons
 let x=game.config.width/4
-console.log({x});
 let x2=game.config.width*3/4
-console.log({x2});
 let y=game.config.height*3/4
 let btn1= new FlatButton({scene:this, key:'btn1', text:'Computer',x,y, event:'computer'})
 let btn2= new FlatButton({scene:this, key:'btn1', text:'Player 2',x:x2,y, event:'human'})
@@ -35,14 +33,12 @@ emitter.on('computer', this.computerFunc, this);
   }
 
   humanFunc(){
-console.log("here!");
-this.scene.start("SceneMainPlayer")
+// this.scene.start("SceneMainPlayer")
+this.scene.start("StartScene")
+
   }
   computerFunc(){
-    console.log("here!");
     this.scene.start("DifficultyScene")
-    console.log(this.scene.start("DifficultyScene"));
-
   }
   update(){
     

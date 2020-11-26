@@ -17,8 +17,7 @@ class EasyScene extends Phaser.Scene {
 
   }
   create(){
-    emmiter = new Phaser.Events.EventEmitter() //should always be the first line , it alows us to talk globally to other parts of our game
-      console.log("Ready!");
+    emmiter = new Phaser.Events.EventEmitter()
     let frameNames = this.anims.generateFrameNumbers('exp');
     let f2=frameNames.slice();
     f2.reverse();
@@ -143,12 +142,7 @@ home(){
 }
  onWorldBounds =(body)=>
 { 
-  console.log("here");
-  console.log("body", body);
     var ball = body.gameObject;
-    console.log("ball", ball);
-    console.log("ball.x", ball.x);
-    // if(ball.x<=ball.width*.025|| ball.x>=game.config.width-ball.width*.025){
       if(ball.body.blocked.left||ball.body.blocked.right){
         if(ball.body.blocked.right){
           score1+=1;
@@ -176,22 +170,19 @@ winnig(){
   if(score2==7){
     score1=score2=0
     won="Computer"
-    lost="Don't take it personally Player1"
+    lost="Don't take it personally!"
     this.scene.start('GameOver');
   }
   else if(score1==7){
     score1=score2=0
-    won="player1"
+    won="You"
     lost="You deafeted the MACHINE!"
     this.scene.start('GameOver');
   }
 }
 createNewBall(){
-  // this.ball.destroy()
-  // this.ball= this.physics.add.image(game.config.width/2,game.config.height/2,"ball")
   this.ball.x=game.config.width/2
   this.ball.y=game.config.height/2
-  // Align.scaleToGameW(this.ball,.025)
   this.ball.setVelocity(350,350)
 
   this.ball.body.collideWorldBounds = true
@@ -205,7 +196,7 @@ createNewBall(){
   update(){
 
     this.onWorldBounds(this.ball.body)
-// // move paddle 2 for computer
+ // move paddle 2 for computer
     this.player2.body.velocity.setTo(this.ball.body.velocity.y);
     this.player2.body.velocity.x=0
     this.player2.body.maxVelocity.y=levelspeed;
