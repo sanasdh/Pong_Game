@@ -3,6 +3,8 @@ let score1=0, score2=0;
 let score1Display, score2Display;
 let player1Display, player2Display, player1DisplayInfo, player2DisplayInfo;
 let gameOver;
+let won, lost;
+let levelspeed;
 const config = {
   type: Phaser.AUTO,
   parent: 'pong',
@@ -16,7 +18,7 @@ physics:{
   default: 'arcade',
   arcade: {
     gravity:false,
-  debug: true}
+  debug: false}
 },
 scene: [PlayerScene,DifficultyScene,EasyScene,SceneMainPlayer, GameOver]
 }
