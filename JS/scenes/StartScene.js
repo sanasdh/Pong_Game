@@ -14,6 +14,13 @@ class StartScene extends Phaser.Scene {
     let x1=game.config.width/10
     let y1=game.config.height*7/8
 
+    this.serve= this.add.text(game.config.width/2,game.config.height*2/3,"*Don't forget, when you are in the game, in orther to \n start the game you haveto serve the ball!",{
+      font: "28px 'VT323'",
+      fill:"white",
+      align: "center"
+    })
+    this.serve.setOrigin(.5,.5)
+
 player1Name= prompt("Please enter your name", "Player 1");
 player2Name= prompt("Please enter your name", "Player 2");
 this.btn= new FlatButton({scene:this, key:'back', text:'Back',x:x1,y:y1, event:'back'})

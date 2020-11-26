@@ -35,6 +35,7 @@ i:hover{
   position: absolute;
   bottom: 0;
   left: 0;
+  animation: bounce-7 1.5s 8;
 }
 #pacman:hover{
   opacity:.5;
